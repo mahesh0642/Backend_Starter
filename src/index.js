@@ -1,14 +1,21 @@
 import express from "express";
 import dotenv from "dotenv";
+import indexroutes from './routes/index.routes.js';
+
+
 
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT;
 let notes = [];
 app.use(express.json()); //To read json data data in req.body
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
-});
+
+app.use((req, res, next) => {
+    console.log("This middleware between app and route");
+    next();
+  });
+
+app.use('/', indexroutes);       
 
 app.post("/notes", (req, res) => {
   console.log(req.body);
