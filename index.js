@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
-import indexroutes from './routes/index.routes.js';
-
+import indexroutes from './src/routes/index.routes.js';
+import authroutes from './src/routes/auth.routes.js';
+import connectDB from './src/config/db.js';
 
 
 const app = express();
@@ -10,12 +11,14 @@ const PORT = process.env.PORT;
 let notes = [];
 app.use(express.json()); //To read json data data in req.body
 
+connectDB();
 app.use((req, res, next) => {
     console.log("This middleware between app and route");
     next();
   });
 
-app.use('/', indexroutes);       
+app.use('/', indexroutes);     
+app.use('/auth', authroutes);  
 
 app.post("/notes", (req, res) => {
   console.log(req.body);
